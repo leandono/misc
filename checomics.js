@@ -8,6 +8,8 @@ if (typeof jQuery !== "undefined" && typeof Intl.NumberFormat !== "undefined") {
         var priceCash = priceInt - discount;
         var formatter = new Intl.NumberFormat("es-AR", {
           style: "decimal",
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
         });
         return formatter.format(priceCash).trim();
       }
@@ -22,6 +24,28 @@ if (typeof jQuery !== "undefined" && typeof Intl.NumberFormat !== "undefined") {
       jQuery(priceProductTransfer).append(
         " <strong>$" + priceCash + "</strong>"
       );
+    }
+
+    // Home
+    var homeItems = ".block-products-feed__product";
+    var priceHome = ".block-products-feed__product-price";
+    var priceHomeContainer = ".block-products-feed__product-wrapper";
+    if (
+      jQuery(homeItems).length &&
+      jQuery(priceHome).length &&
+      jQuery(priceHomeContainer).length
+    ) {
+      jQuery(homeItems).each(function () {
+        var priceStr = jQuery(this).find(priceHome).text().trim();
+        var priceCash = getPriceCash(priceStr);
+        jQuery(this)
+          .find(priceHomeContainer)
+          .append(
+            " <p class='block-products-feed__product-additional text--primary'>15% OFF efectivo/transferencia $" +
+              priceCash +
+              "</p>"
+          );
+      });
     }
   });
 }
