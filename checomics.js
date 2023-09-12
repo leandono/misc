@@ -1,3 +1,4 @@
+// Cash price
 if (typeof jQuery !== "undefined" && typeof Intl.NumberFormat !== "undefined") {
   jQuery(document).ready(function () {
     var getPriceCash = function (priceStr) {
@@ -48,4 +49,74 @@ if (typeof jQuery !== "undefined" && typeof Intl.NumberFormat !== "undefined") {
     //   });
     // }
   });
+}
+
+// Fix ML
+function get_mercadopago_installments(callback) {
+  if (medios_pago.mercadopago) {
+    var installments = {
+      2: {
+        setup: false,
+        free: [],
+      },
+
+      3: {
+        setup: false,
+        free: [],
+      },
+
+      6: {
+        setup: false,
+        free: [],
+      },
+
+      9: {
+        setup: false,
+        free: [],
+      },
+
+      12: {
+        setup: false,
+        free: [],
+      },
+
+      18: {
+        setup: false,
+        free: [],
+      },
+
+      24: {
+        setup: false,
+        free: [],
+      },
+    };
+
+    Mercadopago.setPublishableKey(medios_pago.mercadopago_public_key);
+    Mercadopago.getInstallments(
+      {
+        bin: "480543",
+        amount: s_producto.precio,
+      },
+
+      function (status, response_b) {
+        if (status === 200) {
+          if (response_b.length) {
+            response_b[0].payer_costs.forEach(function (item) {
+              if (item.installment_rate === 0 && item.installments > 1) {
+                installments[item.installments.toString()].setup = true;
+              }
+            });
+
+            return callback(false, installments);
+          } else {
+            return callback(false, installments);
+          }
+        } else {
+          return callback(false, installments);
+        }
+      }
+    );
+  } else {
+    return callback(false, null);
+  }
 }
