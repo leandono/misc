@@ -20,11 +20,16 @@ if (typeof jQuery !== "undefined" && typeof Intl.NumberFormat !== "undefined") {
     var priceProduct = ".product-vip__price-value";
     var priceProductTransfer = ".product-vip__promo-transfer-value";
     if (jQuery(priceProduct).length && jQuery(priceProductTransfer).length) {
-      var priceStr = jQuery(priceProduct).text().trim();
+      var priceSelector = jQuery(priceProduct).has("del")
+        ? jQuery(priceProduct).clone().find("del").remove().end()
+        : jQuery(priceProduct);
+      var priceStr = priceSelector.text().trim();
       var priceCash = getPriceCash(priceStr);
-      jQuery(priceProductTransfer).append(
-        " <strong>$" + priceCash + "</strong>"
-      );
+      if (priceCash) {
+        jQuery(priceProductTransfer).append(
+          " <strong>$" + priceCash + "</strong>"
+        );
+      }
     }
 
     // // Home
