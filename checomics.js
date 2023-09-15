@@ -20,7 +20,7 @@ if (typeof jQuery !== "undefined" && typeof Intl.NumberFormat !== "undefined") {
     var priceProduct = ".product-vip__price-value";
     var priceProductTransfer = ".product-vip__promo-transfer-value";
     if (jQuery(priceProduct).length && jQuery(priceProductTransfer).length) {
-      var priceSelector = jQuery(priceProduct).has("del")
+      var priceSelector = jQuery(priceProduct).has("del").length
         ? jQuery(priceProduct).clone().find("del").remove().end()
         : jQuery(priceProduct);
       var priceStr = priceSelector.text().trim();
