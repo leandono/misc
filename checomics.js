@@ -2,9 +2,12 @@
 if (typeof jQuery !== "undefined" && typeof Intl.NumberFormat !== "undefined") {
   jQuery(document).ready(function () {
     var getPriceCash = function (priceStr) {
-      if (priceStr && priceStr.startsWith("$") && priceStr.endsWith(",00")) {
-        var price = priceStr.replace(",00", "").replace(/\D/g, "");
-        var priceInt = parseInt(price);
+      if (priceStr && priceStr.startsWith("$") && priceStr.includes(",")) {
+        var price = priceStr
+          .replace("$", "")
+          .replace(".", "")
+          .replace(",", ".");
+        var priceInt = parseFloat(price);
         var discount = priceInt * (15 / 100);
         var priceCash = priceInt - discount;
         var formatter = new Intl.NumberFormat("es-AR", {
