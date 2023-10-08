@@ -1,14 +1,19 @@
 // Cash price
 if (typeof jQuery !== "undefined" && typeof Intl.NumberFormat !== "undefined") {
   jQuery(document).ready(function () {
-    var getPriceCash = function (priceStr) {
-      if (priceStr && priceStr.startsWith("$") && priceStr.includes(",")) {
+    var getPriceCash = function (discount, priceStr) {
+      if (
+        discount &&
+        priceStr &&
+        priceStr.startsWith("$") &&
+        priceStr.includes(",")
+      ) {
         var price = priceStr
           .replace("$", "")
           .replace(".", "")
           .replace(",", ".");
         var priceInt = parseFloat(price);
-        var discount = priceInt * (15 / 100);
+        var discount = priceInt * (discount / 100);
         var priceCash = priceInt - discount;
         var formatter = new Intl.NumberFormat("es-AR", {
           style: "decimal",
@@ -19,18 +24,59 @@ if (typeof jQuery !== "undefined" && typeof Intl.NumberFormat !== "undefined") {
       }
     };
 
+    var getPriceCard = function (installments, priceStr) {
+      if (
+        installments > 1 &&
+        priceStr &&
+        priceStr.startsWith("$") &&
+        priceStr.includes(",")
+      ) {
+        var price = priceStr
+          .replace("$", "")
+          .replace(".", "")
+          .replace(",", ".");
+        var priceInt = parseFloat(price);
+        var priceCard = Math.round((priceInt / installments) * 100) / 100;
+        var formatter = new Intl.NumberFormat("es-AR", {
+          style: "decimal",
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+        return formatter.format(priceCard).trim();
+      }
+    };
+
     // Product
     var priceProduct = ".product-vip__price-value";
     var priceProductTransfer = ".product-vip__promo-transfer-value";
+    var cashDiscount = 15;
     if (jQuery(priceProduct).length && jQuery(priceProductTransfer).length) {
       var priceSelector = jQuery(priceProduct).has("del").length
         ? jQuery(priceProduct).clone().find("del").remove().end()
         : jQuery(priceProduct);
       var priceStr = priceSelector.text().trim();
-      var priceCash = getPriceCash(priceStr);
+      var priceCash = getPriceCash(cashDiscount, priceStr);
       if (priceCash) {
         jQuery(priceProductTransfer).append(
           " <strong>$" + priceCash + "</strong>"
+        );
+      }
+    }
+
+    var priceProductCard = ".product-vip__promo-installments";
+    var installments = 2;
+    if (jQuery(priceProductCard).length === 0 && jQuery(priceProduct).length) {
+      var priceSelector = jQuery(priceProduct).has("del").length
+        ? jQuery(priceProduct).clone().find("del").remove().end()
+        : jQuery(priceProduct);
+      var priceStr = priceSelector.text().trim();
+      var priceCard = getPriceCard(installments, priceStr);
+      if (priceStr) {
+        jQuery(priceProduct).after(
+          `<p class="product-vip__promo-installments text--primary">
+            <i class="far fa-credit-card"></i>
+            <span class="product-vip__promo-installments-value"><strong>${installments}</strong> cuotas sin interés de <strong>${priceCard}</strong></span>
+          </p>`
         );
       }
     }
