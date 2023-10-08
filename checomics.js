@@ -80,7 +80,7 @@ if (
         jQuery(priceProductWrap).after(
           `<p class="product-vip__promo-installments text--primary">
             <i class="far fa-credit-card"></i>
-            <span class="product-vip__promo-installments-value"><strong>${installments}</strong> cuotas sin interés de <strong>${priceCard}</strong></span>
+            <span class="product-vip__promo-installments-value"><strong>${installments}</strong> cuotas sin interés de <strong>$${priceCard}</strong></span>
           </p>`
         );
       }
