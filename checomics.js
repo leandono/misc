@@ -1,5 +1,9 @@
 // Cash price
-if (typeof jQuery !== "undefined" && typeof Intl.NumberFormat !== "undefined") {
+if (
+  typeof jQuery !== "undefined" &&
+  typeof Intl === "object" &&
+  typeof Intl.NumberFormat !== "undefined"
+) {
   jQuery(document).ready(function () {
     var getPriceCash = function (discount, priceStr) {
       if (
