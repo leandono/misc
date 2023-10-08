@@ -51,6 +51,7 @@ if (
     };
 
     // Product
+    var priceProductWrap = ".product-vip__price";
     var priceProduct = ".product-vip__price-value";
     var priceProductTransfer = ".product-vip__promo-transfer-value";
     var cashDiscount = 15;
@@ -76,7 +77,7 @@ if (
       var priceStr = priceSelector.text().trim();
       var priceCard = getPriceCard(installments, priceStr);
       if (priceStr) {
-        jQuery(priceProduct).after(
+        jQuery(priceProductWrap).after(
           `<p class="product-vip__promo-installments text--primary">
             <i class="far fa-credit-card"></i>
             <span class="product-vip__promo-installments-value"><strong>${installments}</strong> cuotas sin interés de <strong>${priceCard}</strong></span>
