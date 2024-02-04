@@ -68,9 +68,14 @@ if (
       }
     }
 
+    var installmentsEnabled = false;
     var priceProductCard = ".product-vip__promo-installments";
     var installments = 2;
-    if (jQuery(priceProductCard).length === 0 && jQuery(priceProduct).length) {
+    if (
+      installmentsEnabled &&
+      jQuery(priceProductCard).length === 0 &&
+      jQuery(priceProduct).length
+    ) {
       var priceSelector = jQuery(priceProduct).has("del").length
         ? jQuery(priceProduct).clone().find("del").remove().end()
         : jQuery(priceProduct);
