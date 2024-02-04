@@ -54,7 +54,7 @@ if (
     var priceProductWrap = ".product-vip__price";
     var priceProduct = ".product-vip__price-value";
     var priceProductTransfer = ".product-vip__promo-transfer-value";
-    var cashDiscount = 15;
+    var cashDiscount = 20;
     if (jQuery(priceProduct).length && jQuery(priceProductTransfer).length) {
       var priceSelector = jQuery(priceProduct).has("del").length
         ? jQuery(priceProduct).clone().find("del").remove().end()
