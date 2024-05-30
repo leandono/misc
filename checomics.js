@@ -4,6 +4,8 @@ if (
   typeof Intl === "object" &&
   typeof Intl.NumberFormat !== "undefined"
 ) {
+  var CASH_DISCOUNT = 20;
+
   jQuery(document).ready(function () {
     var getPriceCash = function (discount, priceStr) {
       if (
@@ -49,18 +51,18 @@ if (
         return formatter.format(priceCard).trim();
       }
     };
+    window.getPriceCard = getPriceCard;
 
     // Product
     var priceProductWrap = ".product-vip__price";
     var priceProduct = ".product-vip__price-value";
     var priceProductTransfer = ".product-vip__promo-transfer-value";
-    var cashDiscount = 20;
     if (jQuery(priceProduct).length && jQuery(priceProductTransfer).length) {
       var priceSelector = jQuery(priceProduct).has("del").length
         ? jQuery(priceProduct).clone().find("del").remove().end()
         : jQuery(priceProduct);
       var priceStr = priceSelector.text().trim();
-      var priceCash = getPriceCash(cashDiscount, priceStr);
+      var priceCash = getPriceCash(CASH_DISCOUNT, priceStr);
       if (priceCash) {
         jQuery(priceProductTransfer).append(
           " <strong>$" + priceCash + "</strong>"
@@ -91,27 +93,19 @@ if (
       }
     }
 
-    // // Home
-    // var homeItems = ".block-products-feed__product";
-    // var priceHome = ".block-products-feed__product-price";
-    // var priceHomeContainer = ".block-products-feed__product-wrapper";
-    // if (
-    //   jQuery(homeItems).length &&
-    //   jQuery(priceHome).length &&
-    //   jQuery(priceHomeContainer).length
-    // ) {
-    //   jQuery(homeItems).each(function () {
-    //     var priceStr = jQuery(this).find(priceHome).text().trim();
-    //     var priceCash = getPriceCash(priceStr);
-    //     jQuery(this)
-    //       .find(priceHomeContainer)
-    //       .append(
-    //         " <p class='block-products-feed__product-additional text--primary'>15% OFF efectivo/transferencia $" +
-    //           priceCash +
-    //           "</p>"
-    //       );
-    //   });
-    // }
+    // Home
+    var homeItems = ".block-products-feed__product-wrapper";
+    var priceHome = ".block-products-feed__product-price";
+    var priceHomeAdditional = ".block-products-feed__product-additional";
+    if (jQuery(homeItems).length) {
+      jQuery(homeItems).each(function () {
+        var priceStr = jQuery(this).find(priceHome).text().trim();
+        var priceCash = getPriceCash(CASH_DISCOUNT, priceStr);
+        jQuery(this)
+          .find(priceHomeAdditional)
+          .text(`$${priceCash} (20% OFF transferencia)`);
+      });
+    }
   });
 }
 
