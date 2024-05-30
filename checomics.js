@@ -5,6 +5,7 @@ if (
   typeof Intl.NumberFormat !== "undefined"
 ) {
   var CASH_DISCOUNT = 20;
+  var CASH_DISCOUNT_SHOW = true;
 
   jQuery(document).ready(function () {
     var getPriceCash = function (discount, priceStr) {
@@ -57,9 +58,17 @@ if (
       mainSelector,
       priceSelector,
       priceAdditionalSelector,
-      textDiscount
+      textDiscount,
+      isOffer
     ) {
-      var priceStr = jQuery(mainSelector).find(priceSelector).text().trim();
+      var priceStr = isOffer
+        ? jQuery(mainSelector)
+            .find(priceSelector)
+            .contents()
+            .eq(2)
+            .text()
+            .trim()
+        : jQuery(mainSelector).find(priceSelector).text().trim();
       var priceCash = getPriceCash(CASH_DISCOUNT, priceStr);
       jQuery(mainSelector)
         .find(priceAdditionalSelector)
@@ -110,7 +119,7 @@ if (
     var homeItems = ".block-products-feed__product-wrapper";
     var homePrice = ".block-products-feed__product-price";
     var HomePriceAdditional = ".block-products-feed__product-additional";
-    if (jQuery(homeItems).length) {
+    if (CASH_DISCOUNT_SHOW && jQuery(homeItems).length) {
       jQuery(homeItems).each(function () {
         appendCashDiscount(
           this,
@@ -125,7 +134,7 @@ if (
     var productsItems = ".products-feed__product-wrapper";
     var productsPrice = ".products-feed__product-price";
     var productsPriceAdditional = ".products-feed__product-additional";
-    if (jQuery(productsItems).length) {
+    if (CASH_DISCOUNT_SHOW && jQuery(productsItems).length) {
       setInterval(function () {
         jQuery(productsItems).each(function () {
           var productsPriceAdditionalText = jQuery(this)
@@ -137,7 +146,8 @@ if (
               this,
               productsPrice,
               productsPriceAdditional,
-              `(${CASH_DISCOUNT}% OFF)`
+              `(${CASH_DISCOUNT}% OFF)`,
+              jQuery(location).attr("href").includes("/ofertas") || false
             );
           }
         });
