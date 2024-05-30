@@ -53,6 +53,19 @@ if (
     };
     window.getPriceCard = getPriceCard;
 
+    var appendCashDiscount = function (
+      mainSelector,
+      priceSelector,
+      priceAdditionalSelector,
+      textDiscount
+    ) {
+      var priceStr = jQuery(mainSelector).find(priceSelector).text().trim();
+      var priceCash = getPriceCash(CASH_DISCOUNT, priceStr);
+      jQuery(mainSelector)
+        .find(priceAdditionalSelector)
+        .text(`$${priceCash} ${textDiscount}`);
+    };
+
     // Product
     var priceProductWrap = ".product-vip__price";
     var priceProduct = ".product-vip__price-value";
@@ -95,16 +108,40 @@ if (
 
     // Home
     var homeItems = ".block-products-feed__product-wrapper";
-    var priceHome = ".block-products-feed__product-price";
-    var priceHomeAdditional = ".block-products-feed__product-additional";
+    var homePrice = ".block-products-feed__product-price";
+    var HomePriceAdditional = ".block-products-feed__product-additional";
     if (jQuery(homeItems).length) {
       jQuery(homeItems).each(function () {
-        var priceStr = jQuery(this).find(priceHome).text().trim();
-        var priceCash = getPriceCash(CASH_DISCOUNT, priceStr);
-        jQuery(this)
-          .find(priceHomeAdditional)
-          .text(`$${priceCash} (20% OFF transferencia)`);
+        appendCashDiscount(
+          this,
+          homePrice,
+          HomePriceAdditional,
+          `(${CASH_DISCOUNT}% OFF transferencia)`
+        );
       });
+    }
+
+    // Products
+    var productsItems = ".products-feed__product-wrapper";
+    var productsPrice = ".products-feed__product-price";
+    var productsPriceAdditional = ".products-feed__product-additional";
+    if (jQuery(productsItems).length) {
+      setInterval(function () {
+        jQuery(productsItems).each(function () {
+          var productsPriceAdditionalText = jQuery(this)
+            .find(productsPriceAdditional)
+            .text()
+            .trim();
+          if (!productsPriceAdditionalText) {
+            appendCashDiscount(
+              this,
+              productsPrice,
+              productsPriceAdditional,
+              `(${CASH_DISCOUNT}% OFF)`
+            );
+          }
+        });
+      }, 1000);
     }
   });
 }
