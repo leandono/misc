@@ -65,6 +65,7 @@ if (
       mainSelector,
       priceSelector,
       priceAdditionalSelector,
+      mediaSelector,
       textDiscount,
       isOffer
     ) {
@@ -84,7 +85,7 @@ if (
           .text(`$${priceCash.str} ${textDiscount}`);
 
         if (FREE_SHIPPING_SHOW && priceCash.int >= FREE_SHIPPING_MIN) {
-          jQuery(mainSelector).append(
+          jQuery(mediaSelector).append(
             "<span class='products-free-shipping'>Incluye envío gratis</span>"
           );
         }
@@ -134,14 +135,17 @@ if (
     // Home
     var homeItems = ".block-products-feed__product-wrapper";
     var homePrice = ".block-products-feed__product-price";
-    var HomePriceAdditional = ".block-products-feed__product-additional";
+    var homePriceAdditional = ".block-products-feed__product-additional";
+    var homeItemsMedia = ".block-products-feed__product-media";
     if (CASH_DISCOUNT_SHOW && jQuery(homeItems).length) {
       jQuery(homeItems).each(function () {
         appendCashDiscount(
           this,
           homePrice,
-          HomePriceAdditional,
-          `(${CASH_DISCOUNT}% OFF transferencia)`
+          homePriceAdditional,
+          homeItemsMedia,
+          `(${CASH_DISCOUNT}% OFF transferencia)`,
+          false
         );
       });
     }
@@ -150,6 +154,7 @@ if (
     var productsItems = ".products-feed__product-wrapper";
     var productsPrice = ".products-feed__product-price";
     var productsPriceAdditional = ".products-feed__product-additional";
+    var productsItemsMedia = ".products-feed__product-media";
     if (CASH_DISCOUNT_SHOW && jQuery(productsItems).length) {
       setInterval(function () {
         jQuery(productsItems).each(function () {
@@ -162,6 +167,7 @@ if (
               this,
               productsPrice,
               productsPriceAdditional,
+              productsItemsMedia,
               `(${CASH_DISCOUNT}% OFF)`,
               jQuery(location).attr("href").includes("/ofertas") || false
             );
