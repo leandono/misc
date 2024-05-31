@@ -85,9 +85,11 @@ if (
           .text(`$${priceCash.str} ${textDiscount}`);
 
         if (FREE_SHIPPING_SHOW && priceCash.int >= FREE_SHIPPING_MIN) {
-          jQuery(mediaSelector).append(
-            "<span class='products-free-shipping'>Incluye envío gratis</span>"
-          );
+          jQuery(mainSelector)
+            .find(mediaSelector)
+            .append(
+              "<span class='products-free-shipping'>Incluye envío gratis</span>"
+            );
         }
       }
     };
