@@ -7,7 +7,7 @@ if (
   var CASH_DISCOUNT = 20;
   var CASH_DISCOUNT_SHOW = true;
   var FREE_SHIPPING_MIN = 25000;
-  var FREE_SHIPPING_SHOW = true;
+  var FREE_SHIPPING_SHOW = false;
 
   jQuery(document).ready(function () {
     var getPriceCash = function (discount, priceStr) {
