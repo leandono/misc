@@ -6,6 +6,8 @@ if (
 ) {
   var CASH_DISCOUNT = 20;
   var CASH_DISCOUNT_SHOW = true;
+  var FREE_SHIPPING_MIN = 25000;
+  var FREE_SHIPPING_SHOW = true;
 
   jQuery(document).ready(function () {
     var getPriceCash = function (discount, priceStr) {
@@ -27,7 +29,10 @@ if (
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         });
-        return formatter.format(priceCash).trim();
+        return {
+          str: formatter.format(priceCash).trim(),
+          int: priceCash,
+        };
       }
     };
 
@@ -49,10 +54,12 @@ if (
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         });
-        return formatter.format(priceCard).trim();
+        return {
+          str: formatter.format(priceCard).trim(),
+          int: priceCard,
+        };
       }
     };
-    window.getPriceCard = getPriceCard;
 
     var appendCashDiscount = function (
       mainSelector,
@@ -70,9 +77,18 @@ if (
             .trim()
         : jQuery(mainSelector).find(priceSelector).text().trim();
       var priceCash = getPriceCash(CASH_DISCOUNT, priceStr);
-      jQuery(mainSelector)
-        .find(priceAdditionalSelector)
-        .text(`$${priceCash} ${textDiscount}`);
+
+      if (priceCash) {
+        jQuery(mainSelector)
+          .find(priceAdditionalSelector)
+          .text(`$${priceCash.str} ${textDiscount}`);
+
+        if (FREE_SHIPPING_SHOW && priceCash.int >= FREE_SHIPPING_MIN) {
+          jQuery(mainSelector).append(
+            "<span class='products-free-shipping'>Incluye envío gratis</span>"
+          );
+        }
+      }
     };
 
     // Product
@@ -87,7 +103,7 @@ if (
       var priceCash = getPriceCash(CASH_DISCOUNT, priceStr);
       if (priceCash) {
         jQuery(priceProductTransfer).append(
-          " <strong>$" + priceCash + "</strong>"
+          " <strong>$" + priceCash.str + "</strong>"
         );
       }
     }
@@ -109,7 +125,7 @@ if (
         jQuery(priceProductWrap).after(
           `<p class="product-vip__promo-installments text--primary">
             <i class="far fa-credit-card"></i>
-            <span class="product-vip__promo-installments-value"><strong>${installments}</strong> cuotas sin interés de <strong>$${priceCard}</strong></span>
+            <span class="product-vip__promo-installments-value"><strong>${installments}</strong> cuotas sin interés de <strong>$${priceCard.str}</strong></span>
           </p>`
         );
       }
