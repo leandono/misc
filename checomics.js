@@ -66,17 +66,13 @@ if (
       priceSelector,
       priceAdditionalSelector,
       mediaSelector,
-      textDiscount,
-      isOffer
+      textDiscount
     ) {
-      var priceStr = isOffer
-        ? jQuery(mainSelector)
-            .find(priceSelector)
-            .contents()
-            .eq(2)
-            .text()
-            .trim()
-        : jQuery(mainSelector).find(priceSelector).text().trim();
+      var priceStr = jQuery(mainSelector).find(priceSelector).text().trim();
+      // Offers
+      if (priceStr.split("$").length === 3) {
+        priceStr = priceStr.split("$")[2];
+      }
       var priceCash = getPriceCash(CASH_DISCOUNT, priceStr);
 
       if (priceCash) {
@@ -146,8 +142,7 @@ if (
           homePrice,
           homePriceAdditional,
           homeItemsMedia,
-          `(${CASH_DISCOUNT}% OFF transferencia)`,
-          false
+          `(${CASH_DISCOUNT}% OFF transferencia)`
         );
       });
     }
@@ -170,8 +165,7 @@ if (
               productsPrice,
               productsPriceAdditional,
               productsItemsMedia,
-              `(${CASH_DISCOUNT}% OFF)`,
-              jQuery(location).attr("href").includes("/ofertas") || false
+              `(${CASH_DISCOUNT}% OFF)`
             );
           }
         });
