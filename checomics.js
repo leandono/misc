@@ -69,10 +69,10 @@ if (
       textDiscount
     ) {
       var priceStr = jQuery(mainSelector).find(priceSelector).text().trim();
-      // Offers
-      if (priceStr.split("$").length === 3) {
-        priceStr = priceStr.split("$")[2];
-      }
+      // Get the last price shown
+      priceStr = priceStr
+        ? (priceStr.match(/\$\d+(\.\d{3})*,\d{2}/g) || []).pop()
+        : "";
       var priceCash = getPriceCash(CASH_DISCOUNT, priceStr);
 
       if (priceCash) {
