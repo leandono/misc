@@ -8,6 +8,7 @@ if (
   var CASH_DISCOUNT_SHOW = true;
   var FREE_SHIPPING_MIN = 25000;
   var FREE_SHIPPING_SHOW = false;
+  var NAVBAR_OFFERS_ENABLED = true;
 
   jQuery(document).ready(function () {
     var getPriceCash = function (discount, priceStr) {
@@ -170,6 +171,17 @@ if (
           }
         });
       }, 1000);
+    }
+
+    // Navbar Offers
+    if (NAVBAR_OFFERS_ENABLED) {
+      jQuery(".header-menu__desktop-list").append(
+        `<li class="desktop-list__item text--primary"><a href="https://www.checomics.com.ar/ofertas" class="desktop-list__link">Ofertas</a></li>`
+      );
+
+      jQuery(".mobile-menu-sidenav__list-item--divider").before(
+        `<li class="mobile-menu-sidenav__list-item"><a href="https://www.checomics.com.ar/ofertas" class="mobile-menu-sidenav__item-link">Ofertas</a></li>`
+      );
     }
   });
 }
